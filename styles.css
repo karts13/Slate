@@ -1,3 +1,11 @@
+body {
+    background-color: #FFFFFF;
+    color: #1A1A1A;
+    overflow-y: auto;
+    scrollbar-width: auto;
+    scrollbar-color: #A0A0A0 #F1F1F1;
+}
+
 body.dark {
     background-color: #1A1A1A;
     color: #FFFFFF;
@@ -51,10 +59,120 @@ body.dark .hover\:text-gray-500:hover {
     color: #9CA3AF;
 }
 
+.active-heading {
+    color: #A855F7;
+    font-weight: 600;
+}
+
+body.dark .active-heading {
+    color: #D8B4FE;
+}
+
+#projectList {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    padding: 0;
+}
+
+#projectList li {
+    text-align: left;
+    width: 80%;
+}
+
+#projectList a {
+    display: block;
+    width: 100%;
+    font-size: 0.95rem;
+    font-weight: 550;
+    color: #6B7280 !important;
+    padding-bottom: 3%;
+}
+
+#projectList a:hover {
+    color: #A855F7 !important;
+}
+
+body.dark #projectList a {
+    color: #6B7280 !important;
+}
+
+body.dark #projectList a:hover {
+    color: #D8B4FE !important;
+}
+
+#headingsNav a {
+    font-size: 0.95rem;
+    color: #6B7280 !important;
+    transition: color 0.2s ease;
+}
+
+#headingsNav a:hover {
+    color: #A855F7 !important;
+}
+
+body.dark #headingsNav a {
+    color: #6B7280 !important;
+}
+
+body.dark #headingsNav a:hover {
+    color: #D8B4FE !important;
+}
+
 @media (max-width: 768px) {
     .navbar {
         flex-direction: column;
         gap: 1.5rem;
         padding: 1rem 2rem;
     }
+
+    main {
+        flex-direction: column;
+    }
+
+    aside.w-\[20\%\], aside.w-\[15\%\] {
+        width: 100%;
+        position: static;
+        height: auto;
+    }
+
+    section.w-\[65\%\] {
+        width: 100%;
+        margin-left: 0;
+        padding: 2.5rem;
+    }
+
+    #projectList {
+        height: auto;
+        justify-content: flex-start;
+        padding: 1rem 0;
+    }
+}
+
+.prose h1 {
+    font-size: 2.25rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+}
+
+.prose h2 {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.prose p {
+    margin-bottom: 1rem;
+}
+
+.prose a {
+    color: #A855F7;
+    text-decoration: underline;
+}
+
+body.dark .prose a {
+    color: #D8B4FE;
 }

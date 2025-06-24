@@ -1,0 +1,60 @@
+body.dark {
+    background-color: #1A1A1A;
+    color: #FFFFFF;
+}
+
+body.dark .text-gray-900 {
+    color: #FFFFFF;
+}
+
+body.dark .bg-white {
+    background-color: #1A1A1A;
+}
+
+body.dark .bg-gray-100 {
+    background-color: #2A2A2A;
+}
+
+body.dark .border-gray-200 {
+    border-color: #3A3A3A;
+}
+
+body.dark .text-gray-500 {
+    color: #A0A0A0;
+}
+
+body.dark .hover\:text-purple-600:hover {
+    color: #D8B4FE;
+}
+
+body.dark .bg-gradient-to-r {
+    background-image: linear-gradient(to right, #A855F7, #000000);
+}
+
+body.dark .hover\:bg-gray-200:hover {
+    background-color: #3A3A3A;
+}
+
+body.dark .text-yellow-500 {
+    color: #FBBF24;
+}
+
+body.dark .hover\:text-yellow-400:hover {
+    color: #FCD34D;
+}
+
+body.dark .text-gray-600 {
+    color: #D1D5DB;
+}
+
+body.dark .hover\:text-gray-500:hover {
+    color: #9CA3AF;
+}
+
+@media (max-width: 768px) {
+    .navbar {
+        flex-direction: column;
+        gap: 1.5rem;
+        padding: 1rem 2rem;
+    }
+}

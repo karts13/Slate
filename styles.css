@@ -92,7 +92,7 @@ body.dark .active-heading {
     padding-bottom: 3%;
 }
 
-#projectList a:hover {
+#projectList a hover {
     color: #A855F7 !important;
 }
 
@@ -122,6 +122,47 @@ body.dark #headingsNav a:hover {
     color: #D8B4FE !important;
 }
 
+#markdownContent {
+    width: 100%;
+    padding: 0.5rem 1rem;
+    min-height: calc(100vh - 80px - 3rem);
+    padding-bottom: 14rem;
+}
+
+.next-project-link {
+    margin-top: 2rem;
+    text-align: right;
+}
+
+.next-project-link .next-project-label {
+    font-size: 0.85rem;
+    color: #1A1A1A;
+}
+
+body.dark .next-project-link .next-project-label {
+    color: #FFFFFF;
+}
+
+.next-project-link .project-name {
+    font-size: 1.1rem;
+    color: #A855F7;
+    font-weight: 600;
+    text-decoration: none;
+    display: block;
+}
+
+body.dark .next-project-link .project-name {
+    color: #D8B4FE;
+}
+
+.next-project-link .project-name:hover {
+    color: #9333EA;
+}
+
+body.dark .next-project-link .project-name:hover {
+    color: #C084FC;
+}
+
 @media (max-width: 768px) {
     .navbar {
         flex-direction: column;
@@ -131,6 +172,7 @@ body.dark #headingsNav a:hover {
 
     main {
         flex-direction: column;
+        min-height: auto;
     }
 
     aside.w-\[20\%\], aside.w-\[15\%\] {
@@ -139,10 +181,12 @@ body.dark #headingsNav a:hover {
         height: auto;
     }
 
-    section.w-\[65\%\] {
+    #markdownContent {
         width: 100%;
         margin-left: 0;
         padding: 2.5rem;
+        min-height: auto;
+        padding-bottom: 5rem;
     }
 
     #projectList {
@@ -150,11 +194,16 @@ body.dark #headingsNav a:hover {
         justify-content: flex-start;
         padding: 1rem 0;
     }
+
+    .next-project-link {
+        text-align: center;
+        margin-bottom: 2rem;
+    }
 }
 
 .prose {
-    max-width: 65ch;
-    padding: 0rem 2.5rem;
+    max-width: 70ch;
+    padding: 0rem 1.5rem;
     line-height: 1.75;
 }
 

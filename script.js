@@ -110,6 +110,12 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    function getNextProject(currentId) {
+        const currentIndex = projectList.findIndex(p => p.id === currentId);
+        const nextIndex = (currentIndex + 1) % projectList.length;
+        return projectList[nextIndex];
+    }
+
     function loadMarkdown(projectId) {
         const project = projectList.find(p => p.id === projectId) || projectList[0];
         fetch(project.file)
@@ -117,7 +123,22 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(text => {
                 const markdownContent = document.getElementById('markdownContent');
                 markdownContent.innerHTML = marked.parse(text);
-                hljs.highlightAll(); // Re-highlight code blocks
+                
+                const nextProject = getNextProject(project.id);
+                const nextLinkContainer = document.createElement('div');
+                nextLinkContainer.className = 'next-project-link mt-8 text-right';
+                nextLinkContainer.innerHTML = `
+                    <div class="next-project-label">Next Project</div>
+                    <a href="#${nextProject.id}" class="project-name text-purple-600 dark:text-[#D8B4FE] font-semibold">${nextProject.name}</a>
+                `;
+                nextLinkContainer.querySelector('a').addEventListener('click', (e) => {
+                    e.preventDefault();
+                    window.location.hash = nextProject.id;
+                    loadMarkdown(nextProject.id);
+                });
+                markdownContent.appendChild(nextLinkContainer);
+
+                hljs.highlightAll();
                 generateHeadingsNav();
                 setupIntersectionObserver();
             })
@@ -141,7 +162,15 @@ document.addEventListener('DOMContentLoaded', () => {
             a.className = `block text-gray-900 hover:text-purple-600 dark:text-white dark:hover:text-[#D8B4FE] ${heading.tagName === 'H3' ? 'pl-4 text-sm' : ''}`;
             a.addEventListener('click', (e) => {
                 e.preventDefault();
-                document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
+                const target = document.getElementById(id);
+                const headerHeight = document.querySelector('header').offsetHeight;
+                const targetPosition = target.getBoundingClientRect().top + window.scrollY - headerHeight - 20;
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+                document.querySelectorAll('#headingsNav a').forEach(link => link.classList.remove('active-heading'));
+                a.classList.add('active-heading');
             });
             li.appendChild(a);
             headingsNav.appendChild(li);
@@ -159,7 +188,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (navLink) navLink.classList.add('active-heading');
                 }
             });
-        }, { rootMargin: '-100px 0px -50% 0px' });
+        }, {
+            rootMargin: '-80px 0px -60% 0px',
+            threshold: 0.1
+        });
 
         headings.forEach(heading => observer.observe(heading));
     }

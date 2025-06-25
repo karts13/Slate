@@ -4,6 +4,7 @@ body {
     overflow-y: auto;
     scrollbar-width: auto;
     scrollbar-color: #A0A0A0 #F1F1F1;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 body.dark {
@@ -151,28 +152,178 @@ body.dark #headingsNav a:hover {
     }
 }
 
+.prose {
+    max-width: 65ch;
+    padding: 0rem 2.5rem;
+    line-height: 1.75;
+}
+
 .prose h1 {
     font-size: 2.25rem;
     font-weight: 700;
+    margin-top: 1.5rem;
     margin-bottom: 1rem;
+    color: #1A1A1A;
+}
+
+body.dark .prose h1 {
+    color: #FFFFFF;
 }
 
 .prose h2 {
     font-size: 1.5rem;
     font-weight: 600;
     margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    color: #1A1A1A;
+}
+
+body.dark .prose h2 {
+    color: #FFFFFF;
+}
+
+.prose h3 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-top: 1.5rem;
     margin-bottom: 0.5rem;
+    color: #1A1A1A;
+}
+
+body.dark .prose h3 {
+    color: #FFFFFF;
 }
 
 .prose p {
     margin-bottom: 1rem;
+    color: #1A1A1A;
+}
+
+body.dark .prose p {
+    color: #D1D5DB;
 }
 
 .prose a {
     color: #A855F7;
     text-decoration: underline;
+    transition: color 0.2s ease;
+}
+
+.prose a:hover {
+    color: #9333EA;
 }
 
 body.dark .prose a {
     color: #D8B4FE;
+}
+
+body.dark .prose a:hover {
+    color: #C084FC;
+}
+
+.prose code {
+    font-family: 'Menlo', 'Monaco', 'Consolas', 'Courier New', monospace;
+    font-size: 0.875rem;
+    background-color: #F3F4F6;
+    padding: 0.2rem 0.4rem;
+    border-radius: 0.25rem;
+    color: #1A1A1A;
+}
+
+body.dark .prose code {
+    background-color: #2A2A2A;
+    color: #D1D5DB;
+}
+
+.prose pre {
+    background-color: #F3F4F6;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    overflow-x: auto;
+    font-size: 0.875rem;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+}
+
+body.dark .prose pre {
+    background-color: #2A2A2A;
+}
+
+.prose pre code {
+    background-color: transparent;
+    padding: 0;
+    color: inherit;
+}
+
+.prose hr {
+    border: none;
+    border-top: 1px solid #E5E7EB;
+    margin: 2rem 0;
+}
+
+body.dark .prose hr {
+    border-top-color: #3A3A3A;
+}
+
+.prose ul,
+.prose ol {
+    margin-bottom: 1rem;
+    padding-left: 1.5rem;
+}
+
+.prose ul {
+    list-style-type: disc;
+}
+
+.prose ol {
+    list-style-type: decimal;
+}
+
+.prose li {
+    margin-bottom: 0.5rem;
+    color: #1A1A1A;
+}
+
+body.dark .prose li {
+    color: #D1D5DB;
+}
+
+.prose blockquote {
+    border-left: 4px solid #E5E7EB;
+    padding-left: 1rem;
+    margin-bottom: 1rem;
+    color: #4B5563;
+    font-style: italic;
+}
+
+body.dark .prose blockquote {
+    border-left-color: #4B5563;
+    color: #9CA3AF;
+}
+
+.prose table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 1rem;
+}
+
+.prose th,
+.prose td {
+    border: 1px solid #E5E7EB;
+    padding: 0.5rem;
+    text-align: left;
+}
+
+body.dark .prose th,
+body.dark .prose td {
+    border-color: #3A3A3A;
+}
+
+.prose th {
+    background-color: #F3F4F6;
+    font-weight: 600;
+}
+
+body.dark .prose th {
+    background-color: #2A2A2A;
 }

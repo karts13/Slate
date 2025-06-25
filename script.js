@@ -1,3 +1,31 @@
+marked.setOptions({
+    renderer: new marked.Renderer(),
+    highlight: function (code, lang) {
+        const language = hljs.getLanguage(lang) ? lang : 'plaintext';
+        return hljs.highlight(code, { language }).value;
+    },
+    langPrefix: 'hljs language-',
+    gfm: true,
+    breaks: true,
+    sanitize: false,
+});
+
+const renderer = new marked.Renderer();
+renderer.code = (code, lang) => {
+    const language = lang || 'plaintext';
+    const highlighted = hljs.highlight(code, { language }).value;
+    return `<pre><code class="hljs language-${language}">${highlighted}</code></pre>`;
+};
+renderer.hr = () => `<hr>`;
+renderer.list = (body, ordered) => {
+    const tag = ordered ? 'ol' : 'ul';
+    return `<${tag}>${body}</${tag}>`;
+};
+renderer.listitem = (text) => `<li>${text}</li>`;
+renderer.paragraph = (text) => `<p>${text}</p>`;
+renderer.heading = (text, level) => `<h${level} id="${text.toLowerCase().replace(/[^\w]+/g, '-')}">${text}</h${level}>`;
+marked.use({ renderer });
+
 function toggleTheme() {
     const isDark = document.body.classList.contains('dark');
     const newTheme = !isDark;
@@ -89,6 +117,7 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(text => {
                 const markdownContent = document.getElementById('markdownContent');
                 markdownContent.innerHTML = marked.parse(text);
+                hljs.highlightAll(); // Re-highlight code blocks
                 generateHeadingsNav();
                 setupIntersectionObserver();
             })

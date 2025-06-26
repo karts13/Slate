@@ -23,7 +23,16 @@ renderer.list = (body, ordered) => {
 };
 renderer.listitem = (text) => `<li>${text}</li>`;
 renderer.paragraph = (text) => `<p>${text}</p>`;
-renderer.heading = (text, level) => `<h${level} id="${text.toLowerCase().replace(/[^\w]+/g, '-')}">${text}</h${level}>`;
+renderer.heading = (text, level) => {
+    const baseId = text.toLowerCase().replace(/[^\w]+/g, '-').replace(/-+/g, '-').replace(/^-|-$/g, '');
+    let uniqueId = baseId;
+    let counter = 1;
+    while (document.getElementById(uniqueId)) {
+        uniqueId = `${baseId}-${counter}`;
+        counter++;
+    }
+    return `<h${level} id="${uniqueId}">${text}</h${level}>`;
+};
 marked.use({ renderer });
 
 function searchProjects() {
@@ -124,70 +133,71 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function generateHeadingsNav() {
-    const headingsNav = document.getElementById('headingsNav');
-    const headingsNavMobile = document.getElementById('headingsNavMobile');
+        const headingsNav = document.getElementById('headingsNav');
+        const headingsNavMobile = document.getElementById('headingsNavMobile');
 
-    const populateHeadings = (navElement, isMobile = false) => {
-        if (navElement) {
-            navElement.innerHTML = '';
-            const headings = document.querySelectorAll('#markdownContent h2, #markdownContent h3');
-            if (headings.length === 0) {
-                console.warn('No headings found in #markdownContent');
-            }
-            headings.forEach((heading, index) => {
-                const id = heading.id || `heading-${index}`;
-                heading.id = id;
-                const li = document.createElement('li');
-                const a = document.createElement('a');
-                a.href = `#${id}`;
-                a.textContent = heading.textContent;
-                a.className = `block text-gray-900 hover:text-purple-600 ${heading.tagName === 'H3' ? 'pl-4 text-sm' : ''}`;
-                a.addEventListener('click', (e) => {
-                    e.preventDefault();
-                    const target = document.getElementById(id);
-                    if (target) {
-                        const header = document.querySelector('header');
-                        const subNav = document.querySelector('.sub-nav');
-                        const headerHeight = (header ? header.offsetHeight : 0) + (subNav ? subNav.offsetHeight : 0);
-                        const targetPosition = target.getBoundingClientRect().top + window.scrollY - headerHeight - 20;
-                        console.log(`Scrolling to ${id}, targetPosition: ${targetPosition}, headerHeight: ${headerHeight}`);
-                        window.scrollTo({
-                            top: targetPosition,
-                            behavior: 'smooth'
-                        });
-                        [headingsNav, headingsNavMobile].forEach(nav => {
-                            if (nav) {
-                                const navLinks = nav.querySelectorAll('a');
-                                navLinks.forEach(link => link.classList.remove('active-heading'));
-                                const matchingLink = nav.querySelector(`a[href="#${id}"]`);
-                                if (matchingLink) matchingLink.classList.add('active-heading');
+        const populateHeadings = (navElement, isMobile = false) => {
+            if (navElement) {
+                navElement.innerHTML = '';
+                const headings = document.querySelectorAll('#markdownContent h2, #markdownContent h3');
+                if (headings.length === 0) {
+                    console.warn('No headings found in #markdownContent');
+                }
+                headings.forEach((heading, index) => {
+                    const id = heading.id || `heading-${index}`;
+                    heading.id = id;
+                    const li = document.createElement('li');
+                    const a = document.createElement('a');
+                    a.href = `#${id}`;
+                    a.textContent = heading.textContent;
+                    a.className = `block text-gray-900 hover:text-purple-600 ${heading.tagName === 'H3' ? 'pl-4 text-sm' : ''}`;
+                    a.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const target = document.getElementById(id);
+                        if (target) {
+                            const header = document.querySelector('header');
+                            const headerHeight = header ? header.offsetHeight : 0;
+                            const targetPosition = target.getBoundingClientRect().top + window.scrollY - headerHeight - 20;
+                            console.log(`Scrolling to ${id}, targetPosition: ${targetPosition}, headerHeight: ${headerHeight}`);
+                            document.documentElement.scrollTo({
+                                top: targetPosition,
+                                behavior: 'smooth'
+                            });
+                            [headingsNav, headingsNavMobile].forEach(nav => {
+                                if (nav) {
+                                    const navLinks = nav.querySelectorAll('a');
+                                    navLinks.forEach(link => link.classList.remove('active-heading'));
+                                    const matchingLink = nav.querySelector(`a[href="#${id}"]`);
+                                    if (matchingLink) matchingLink.classList.add('active-heading');
+                                }
+                            });
+                            if (isMobile && window.innerWidth <= 768) {
+                                const headingsMenu = document.getElementById('headingsMenu');
+                                if (headingsMenu) {
+                                    headingsMenu.classList.remove('show');
+                                    document.getElementById('headingsToggle').classList.remove('active');
+                                }
                             }
-                        });
-                        if (isMobile && window.innerWidth <= 768) {
-                            const headingsMenu = document.getElementById('headingsMenu');
-                            if (headingsMenu) {
-                                headingsMenu.classList.remove('show');
-                                document.getElementById('headingsToggle').classList.remove('active');
-                            }
+                        } else {
+                            console.error(`Target element with ID ${id} not found`);
                         }
-                    } else {
-                        console.error(`Target element with ID ${id} not found`);
-                    }
+                    });
+                    li.appendChild(a);
+                    navElement.appendChild(li);
                 });
-                li.appendChild(a);
-                navElement.appendChild(li);
-            });
-        } else {
-            console.warn(`Navigation element ${navElement.id} not found`);
-        }
-    };
+            } else {
+                console.warn(`Navigation element ${navElement ? navElement.id : 'null'} not found`);
+            }
+        };
 
-    populateHeadings(headingsNav);
-    populateHeadings(headingsNavMobile, true);
-}
+        populateHeadings(headingsNav);
+        populateHeadings(headingsNavMobile, true);
+    }
 
     function setupIntersectionObserver() {
         const headings = document.querySelectorAll('#markdownContent h2, #markdownContent h3');
+        const header = document.querySelector('header');
+        const headerHeight = header ? header.offsetHeight : 0;
         const observer = new IntersectionObserver(
             (entries) => {
                 entries.forEach(entry => {
@@ -205,8 +215,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 });
             },
             {
-                rootMargin: '-80px 0px -60% 0px',
-                threshold: 0.1
+                root: null, // Use viewport as root
+                rootMargin: `-${headerHeight + 20}px 0px -40% 0px`,
+                threshold: 0.2
             }
         );
 

@@ -9,48 +9,52 @@
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
-<body class="font-inter bg-white text-gray-900 transition-colors duration-100">
-    <header>
-    <nav class="navbar flex justify-between items-center px-4 sm:px-20 py-4 border-b border-gray-200 w-full box-border">
-        <div class="nav-left flex items-center gap-10">
-            <a href="index.html" class="logo text-2xl font-semibold text-gray-900">S!ate</a>
-            <div class="search-container relative flex items-center">
-                <input type="text" id="searchInput" placeholder="Search..." class="pl-8 pr-4 py-2 border-none rounded-lg text-sm bg-gray-100 text-gray-900 w-32 focus:outline-none">
-                <i class="fas fa-search search-icon absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm pointer-events-none"></i>
+<body class="font-inter bg-white text-gray-900">
+    <header class="fixed top-0 left-0 w-full z-50 bg-white">
+        <nav class="navbar flex justify-between items-center px-4 sm:px-20 py-4 border-b border-gray-200 w-full box-border">
+            <div class="nav-left flex items-center gap-10">
+                <a href="index.html" class="logo text-2xl font-semibold text-gray-900">S!ate</a>
             </div>
-        </div>
-        <div class="nav-right flex items-center gap-6 text-base font-medium">
-            <a href="index.html" class="text-gray-900 hover:text-purple-600">Home</a>
-            <a href="docs.html" class="text-gray-900 hover:text-purple-600 ml-2">Docs</a>
-            <span class="text-gray-500">|</span>
-            <div class="theme-icon">
-                <i id="themeIcon" class="fas fa-sun text-lg text-yellow-500 cursor-pointer hover:text-yellow-400" onclick="toggleTheme()"></i>
+            <div class="nav-right flex items-center gap-6">
+                <div class="theme-icon">
+                    <i id="themeIcon" class="fas fa-sun text-lg text-yellow-500"></i>
+                </div>
+                <button id="mobileMenuButton" class="md:hidden text-gray-900 focus:outline-none">
+                    <i class="fas fa-bars text-xl"></i>
+                </button>
+                <div id="mobileMenu" class="hidden md:flex md:items-center md:gap-6 flex-col md:flex-row absolute md:static top-16 left-0 w-full md:w-auto bg-white md:bg-transparent border-b md:border-none border-gray-200 px-4 py-4 items-center">
+                    <div class="flex flex-col md:flex-row items-center gap-4 md:gap-6">
+                        <a href="index.html" class="text-gray-900 hover:text-purple-600">Home</a>
+                        <a href="docs.html" class="text-gray-900 hover:text-purple-600">Docs</a>
+                    </div>
+                    <div class="search-container relative flex items-center w-full md:w-32">
+                        <input type="text" id="searchInput" placeholder="Search..." class="pl-8 pr-4 py-2 border-none rounded-lg text-sm bg-gray-100 text-gray-900 w-full md:w-32 focus:outline-none">
+                        <i class="fas fa-search search-icon absolute left-2 top-1/2 transform -translate-y-1/2 text-gray-500 text-sm pointer-events-none"></i>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <a href="https://github.com/karts13" target="_blank" class="text-gray-900 hover:text-purple-600">
+                            <i class="fab fa-github text-xl"></i>
+                        </a>
+                        <a href="mailto:karthishenoy2014@gmail.com" target="_blank" class="text-gray-900 hover:text-purple-600">
+                            <i class="fas fa-envelope text-xl"></i>
+                        </a>
+                        <a href="https://linkedin.com/in/a-karthik-shenoy" target="_blank" class="text-gray-900 hover:text-purple-600">
+                            <i class="fab fa-linkedin text-xl"></i>
+                        </a>
+                    </div>
+                </div>
             </div>
-            <span class="text-gray-400">|</span>
-            <a href="https://github.com/karts13" target="_blank" class="text-gray-900 hover:text-purple-600">
-                <i class="fab fa-github text-xl"></i>
-            </a>
-            <a href="mailto:karthishenoy2014@gmail.com" target="_blank" class="text-gray-900 hover:text-purple-600">
-                <i class="fas fa-envelope text-xl"></i>
-            </a>
-            <a href="https://linkedin.com/in/a-karthik-shenoy" target="_blank" class="text-gray-900 hover:text-purple-600">
-                <i class="fab fa-linkedin text-xl"></i>
-            </a>
-        </div>
-    </nav>
-</header>
+        </nav>
+    </header>
 
     <main>
-    <section class="hero pl-8 sm:pl-36 pr-4 sm:pr-20 py-32 text-left max-w-4xl">
-        <h1 class="text-7xl sm:text-8xl font-extrabold bg-gradient-to-r from-purple-500 to-black bg-clip-text text-transparent">S!ate</h1>
-        <h2 class="text-5xl sm:text-5xl font-semibold text-gray-900 mt-5">Basics that matter.</h2>
-        <p class="text-xl text-gray-900 mt-6">A centralized platform to explore my projects, read documentation, download APKs, and watch tutorial videos with ease.</p>
-        <a href="docs.html" class="cta-button inline-block px-5 py-3 bg-gray-100 text-gray-900 text-lg rounded-full mt-10 hover:bg-gray-200 transition-colors">View Projects ↗</a>
-    </section>
-</main>
-
-
-
+        <section class="hero pl-8 sm:pl-36 pr-4 sm:pr-20 py-32 text-left max-w-4xl mt-16">
+            <h1 class="text-7xl sm:text-8xl font-extrabold bg-gradient-to-r from-purple-500 to-black bg-clip-text text-transparent">S!ate</h1>
+            <h2 class="text-5xl sm:text-5xl font-semibold text-gray-900 mt-5">Basics that matter.</h2>
+            <p class="text-xl text-gray-900 mt-6">A centralized platform to explore my projects, read documentation, download APKs, and watch tutorial videos with ease.</p>
+            <a href="docs.html" class="cta-button inline-block px-5 py-3 bg-gray-100 text-gray-900 text-lg rounded-full mt-10 hover:bg-gray-200 transition-colors">View Projects ↗</a>
+        </section>
+    </main>
 
     <script src="script.js"></script>
 </body>

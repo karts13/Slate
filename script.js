@@ -26,57 +26,12 @@ renderer.paragraph = (text) => `<p>${text}</p>`;
 renderer.heading = (text, level) => `<h${level} id="${text.toLowerCase().replace(/[^\w]+/g, '-')}">${text}</h${level}>`;
 marked.use({ renderer });
 
-function toggleTheme() {
-    const isDark = document.body.classList.contains('dark');
-    const newTheme = !isDark;
-    const themeIcon = document.getElementById('themeIcon');
-    const header = document.querySelector('header');
-    const asides = document.querySelectorAll('aside');
-
-    const classUpdates = () => {
-        document.body.classList.toggle('dark', newTheme);
-        themeIcon.classList.toggle('fa-sun', !newTheme);
-        themeIcon.classList.toggle('fa-moon', newTheme);
-        themeIcon.classList.toggle('text-yellow-500', !newTheme);
-        themeIcon.classList.toggle('text-gray-600', newTheme);
-        themeIcon.classList.toggle('hover:text-yellow-400', !newTheme);
-        themeIcon.classList.toggle('hover:text-gray-500', newTheme);
-        header.classList.toggle('bg-white', !newTheme);
-        header.classList.toggle('dark:bg-[#1A1A1A]', newTheme);
-        asides.forEach(aside => {
-            aside.classList.toggle('bg-white', !newTheme);
-            aside.classList.toggle('dark:bg-[#1A1A1A]', newTheme);
-        });
-    };
-
-    requestAnimationFrame(() => {
-        classUpdates();
-        localStorage.setItem('theme', newTheme ? 'dark' : 'light');
-    });
-}
-
 function searchProjects() {
     const query = document.getElementById('searchInput').value;
     alert('Search functionality to be implemented. Query: ' + query);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    const savedTheme = localStorage.getItem('theme');
-    const themeIcon = document.getElementById('themeIcon');
-    const header = document.querySelector('header');
-    const asides = document.querySelectorAll('aside');
-
-    if (savedTheme === 'dark') {
-        document.body.classList.add('dark');
-        themeIcon.classList.remove('fa-sun', 'text-yellow-500', 'hover:text-yellow-400');
-        themeIcon.classList.add('fa-moon', 'text-gray-600', 'hover:text-gray-500');
-        header.classList.add('dark:bg-[#1A1A1A]');
-        asides.forEach(aside => aside.classList.add('dark:bg-[#1A1A1A]'));
-    } else {
-        header.classList.add('bg-white');
-        asides.forEach(aside => aside.classList.add('bg-white'));
-    }
-
     const projectList = [
         { id: 'silksphere', file: 'markdown/silksphere.md', name: 'SilkSphere' },
         { id: 'deskwatch', file: 'markdown/deskwatch.md', name: 'DeskWatch' },
@@ -93,21 +48,37 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function populateProjectList() {
         const projectListElement = document.getElementById('projectList');
-        projectListElement.innerHTML = '';
-        projectList.forEach(project => {
-            const li = document.createElement('li');
-            const a = document.createElement('a');
-            a.href = `#${project.id}`;
-            a.textContent = project.name;
-            a.className = 'text-gray-900 hover:text-purple-600 block';
-            a.addEventListener('click', (e) => {
-                e.preventDefault();
-                window.location.hash = project.id;
-                loadMarkdown(project.id);
-            });
-            li.appendChild(a);
-            projectListElement.appendChild(li);
-        });
+        const projectListMobileElement = document.getElementById('projectListMobile');
+        
+        const populate = (element, isMobile = false) => {
+            if (element) {
+                element.innerHTML = '';
+                projectList.forEach(project => {
+                    const li = document.createElement('li');
+                    const a = document.createElement('a');
+                    a.href = `#${project.id}`;
+                    a.textContent = project.name;
+                    a.className = 'text-gray-900 hover:text-purple-600 block';
+                    a.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        window.location.hash = project.id;
+                        loadMarkdown(project.id);
+                        if (isMobile && window.innerWidth <= 768) {
+                            const projectMenu = document.getElementById('projectMenu');
+                            if (projectMenu) {
+                                projectMenu.classList.remove('show');
+                                document.getElementById('projectToggle').classList.remove('active');
+                            }
+                        }
+                    });
+                    li.appendChild(a);
+                    element.appendChild(li);
+                });
+            }
+        };
+
+        populate(projectListElement);
+        populate(projectListMobileElement, true);
     }
 
     function getNextProject(currentId) {
@@ -122,78 +93,163 @@ document.addEventListener('DOMContentLoaded', () => {
             .then(response => response.text())
             .then(text => {
                 const markdownContent = document.getElementById('markdownContent');
-                markdownContent.innerHTML = marked.parse(text);
-                
-                const nextProject = getNextProject(project.id);
-                const nextLinkContainer = document.createElement('div');
-                nextLinkContainer.className = 'next-project-link mt-8 text-right';
-                nextLinkContainer.innerHTML = `
-                    <div class="next-project-label">Next Project</div>
-                    <a href="#${nextProject.id}" class="project-name text-purple-600 dark:text-[#D8B4FE] font-semibold">${nextProject.name}</a>
-                `;
-                nextLinkContainer.querySelector('a').addEventListener('click', (e) => {
-                    e.preventDefault();
-                    window.location.hash = nextProject.id;
-                    loadMarkdown(nextProject.id);
-                });
-                markdownContent.appendChild(nextLinkContainer);
+                if (markdownContent) {
+                    markdownContent.innerHTML = marked.parse(text);
+                    
+                    const nextProject = getNextProject(project.id);
+                    const nextLinkContainer = document.createElement('div');
+                    nextLinkContainer.className = 'next-project-link mt-8 text-right';
+                    nextLinkContainer.innerHTML = `
+                        <div class="next-project-label">Next Project →</div>
+                        <a href="#${nextProject.id}" class="project-name text-purple-600 font-semibold">${nextProject.name}</a>
+                    `;
+                    nextLinkContainer.querySelector('a').addEventListener('click', (e) => {
+                        e.preventDefault();
+                        window.location.hash = nextProject.id;
+                        loadMarkdown(nextProject.id);
+                    });
+                    markdownContent.appendChild(nextLinkContainer);
 
-                hljs.highlightAll();
-                generateHeadingsNav();
-                setupIntersectionObserver();
+                    hljs.highlightAll();
+                    generateHeadingsNav();
+                    setupIntersectionObserver();
+                }
             })
             .catch(error => {
                 console.error('Error loading markdown:', error);
-                document.getElementById('markdownContent').innerHTML = '<p>Error loading documentation.</p>';
+                if (document.getElementById('markdownContent')) {
+                    document.getElementById('markdownContent').innerHTML = '<p>Error loading documentation.</p>';
+                }
             });
     }
 
     function generateHeadingsNav() {
-        const headingsNav = document.getElementById('headingsNav');
-        headingsNav.innerHTML = '';
-        const headings = document.querySelectorAll('#markdownContent h2, #markdownContent h3');
-        headings.forEach((heading, index) => {
-            const id = heading.id || `heading-${index}`;
-            heading.id = id;
-            const li = document.createElement('li');
-            const a = document.createElement('a');
-            a.href = `#${id}`;
-            a.textContent = heading.textContent;
-            a.className = `block text-gray-900 hover:text-purple-600 dark:text-white dark:hover:text-[#D8B4FE] ${heading.tagName === 'H3' ? 'pl-4 text-sm' : ''}`;
-            a.addEventListener('click', (e) => {
-                e.preventDefault();
-                const target = document.getElementById(id);
-                const headerHeight = document.querySelector('header').offsetHeight;
-                const targetPosition = target.getBoundingClientRect().top + window.scrollY - headerHeight - 20;
-                window.scrollTo({
-                    top: targetPosition,
-                    behavior: 'smooth'
+    const headingsNav = document.getElementById('headingsNav');
+    const headingsNavMobile = document.getElementById('headingsNavMobile');
+
+    const populateHeadings = (navElement, isMobile = false) => {
+        if (navElement) {
+            navElement.innerHTML = '';
+            const headings = document.querySelectorAll('#markdownContent h2, #markdownContent h3');
+            if (headings.length === 0) {
+                console.warn('No headings found in #markdownContent');
+            }
+            headings.forEach((heading, index) => {
+                const id = heading.id || `heading-${index}`;
+                heading.id = id;
+                const li = document.createElement('li');
+                const a = document.createElement('a');
+                a.href = `#${id}`;
+                a.textContent = heading.textContent;
+                a.className = `block text-gray-900 hover:text-purple-600 ${heading.tagName === 'H3' ? 'pl-4 text-sm' : ''}`;
+                a.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const target = document.getElementById(id);
+                    if (target) {
+                        const header = document.querySelector('header');
+                        const subNav = document.querySelector('.sub-nav');
+                        const headerHeight = (header ? header.offsetHeight : 0) + (subNav ? subNav.offsetHeight : 0);
+                        const targetPosition = target.getBoundingClientRect().top + window.scrollY - headerHeight - 20;
+                        console.log(`Scrolling to ${id}, targetPosition: ${targetPosition}, headerHeight: ${headerHeight}`);
+                        window.scrollTo({
+                            top: targetPosition,
+                            behavior: 'smooth'
+                        });
+                        [headingsNav, headingsNavMobile].forEach(nav => {
+                            if (nav) {
+                                const navLinks = nav.querySelectorAll('a');
+                                navLinks.forEach(link => link.classList.remove('active-heading'));
+                                const matchingLink = nav.querySelector(`a[href="#${id}"]`);
+                                if (matchingLink) matchingLink.classList.add('active-heading');
+                            }
+                        });
+                        if (isMobile && window.innerWidth <= 768) {
+                            const headingsMenu = document.getElementById('headingsMenu');
+                            if (headingsMenu) {
+                                headingsMenu.classList.remove('show');
+                                document.getElementById('headingsToggle').classList.remove('active');
+                            }
+                        }
+                    } else {
+                        console.error(`Target element with ID ${id} not found`);
+                    }
                 });
-                document.querySelectorAll('#headingsNav a').forEach(link => link.classList.remove('active-heading'));
-                a.classList.add('active-heading');
+                li.appendChild(a);
+                navElement.appendChild(li);
             });
-            li.appendChild(a);
-            headingsNav.appendChild(li);
-        });
-    }
+        } else {
+            console.warn(`Navigation element ${navElement.id} not found`);
+        }
+    };
+
+    populateHeadings(headingsNav);
+    populateHeadings(headingsNavMobile, true);
+}
 
     function setupIntersectionObserver() {
         const headings = document.querySelectorAll('#markdownContent h2, #markdownContent h3');
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                const id = entry.target.id;
-                const navLink = document.querySelector(`#headingsNav a[href="#${id}"]`);
-                if (entry.isIntersecting) {
-                    document.querySelectorAll('#headingsNav a').forEach(link => link.classList.remove('active-heading'));
-                    if (navLink) navLink.classList.add('active-heading');
-                }
-            });
-        }, {
-            rootMargin: '-80px 0px -60% 0px',
-            threshold: 0.1
-        });
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const id = entry.target.id;
+                        [document.getElementById('headingsNav'), document.getElementById('headingsNavMobile')].forEach(nav => {
+                            if (nav) {
+                                const navLinks = nav.querySelectorAll('a');
+                                navLinks.forEach(link => link.classList.remove('active-heading'));
+                                const navLink = nav.querySelector(`a[href="#${id}"]`);
+                                if (navLink) navLink.classList.add('active-heading');
+                            }
+                        });
+                    }
+                });
+            },
+            {
+                rootMargin: '-80px 0px -60% 0px',
+                threshold: 0.1
+            }
+        );
 
         headings.forEach(heading => observer.observe(heading));
+    }
+
+    const mobileMenuButton = document.getElementById('mobileMenuButton');
+    const mobileMenu = document.getElementById('mobileMenu');
+    if (mobileMenuButton && mobileMenu) {
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('show');
+            const icon = mobileMenuButton.querySelector('i');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-times');
+        });
+    }
+
+    const projectToggle = document.getElementById('projectToggle');
+    const projectMenu = document.getElementById('projectMenu');
+    if (projectToggle && projectMenu) {
+        projectToggle.addEventListener('click', () => {
+            projectMenu.classList.toggle('show');
+            projectToggle.classList.toggle('active');
+            const headingsMenu = document.getElementById('headingsMenu');
+            if (headingsMenu && headingsMenu.classList.contains('show')) {
+                headingsMenu.classList.remove('show');
+                document.getElementById('headingsToggle').classList.remove('active');
+            }
+        });
+    }
+
+    const headingsToggle = document.getElementById('headingsToggle');
+    const headingsMenu = document.getElementById('headingsMenu');
+    if (headingsToggle && headingsMenu) {
+        headingsToggle.addEventListener('click', () => {
+            headingsMenu.classList.toggle('show');
+            headingsToggle.classList.toggle('active');
+            const projectMenu = document.getElementById('projectMenu');
+            if (projectMenu && projectMenu.classList.contains('show')) {
+                projectMenu.classList.remove('show');
+                document.getElementById('projectToggle').classList.remove('active');
+            }
+        });
     }
 
     populateProjectList();

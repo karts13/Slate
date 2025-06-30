@@ -1,10 +1,9 @@
 body {
-    background-color: #FFFFFF;
-    color: #1A1A1A;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: #1b1f23;
+    color: #f4f4f4;
+    font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     overflow-y: auto;
     scrollbar-width: auto;
-    scrollbar-color: #A0A0A0 #F1F1F1;
 }
 
 html, body {
@@ -25,7 +24,7 @@ main {
 }
 
 .active-heading {
-    color: #A855F7;
+    color: #f4f4f4;
     font-weight: 600;
 }
 
@@ -33,7 +32,7 @@ main {
     display: flex;
     flex-direction: column;
     align-items: flex-start;
-    padding: 1rem;
+    padding: 0.5rem;
 }
 
 #projectList li, #projectListMobile li {
@@ -46,12 +45,12 @@ main {
     width: 100%;
     font-size: 0.95rem;
     font-weight: 550;
-    color: #6B7280 !important;
-    padding: 0.5rem 0;
+    color: #9ca3af !important; /* Secondary text for project links */
+    padding: 0.3rem 0;
 }
 
 #projectList a:hover, #projectListMobile a:hover {
-    color: #A855F7 !important;
+    color: #f4f4f4 !important; /* Primary text on hover */
 }
 
 #headingsNav, #headingsNavMobile {
@@ -60,12 +59,12 @@ main {
 
 #headingsNav a, #headingsNavMobile a {
     font-size: 0.95rem;
-    color: #6B7280 !important;
+    color: #9ca3af !important; /* Secondary text for headings nav */
     transition: color 0.2s ease;
 }
 
 #headingsNav a:hover, #headingsNavMobile a:hover {
-    color: #A855F7 !important;
+    color: #f4f4f4 !important; /* Primary text on hover */
 }
 
 #markdownContent {
@@ -82,25 +81,26 @@ main {
 
 .next-project-link .next-project-label {
     font-size: 0.85rem;
-    color: #1A1A1A;
+    color: #f4f4f4; /* Primary text for label */
 }
 
 .next-project-link .project-name {
     font-size: 1.1rem;
-    color: #A855F7;
+    color: #f4f4f4; /* Primary text for project name */
     font-weight: 600;
     text-decoration: none;
     display: block;
 }
 
 .next-project-link .project-name:hover {
-    color: #9333EA;
+    color: #d1d5db; /* Slightly lighter gray for hover */
 }
 
 .sub-nav {
     display: flex;
     justify-content: space-between;
-    align-items: set;
+    align-items: center; /* Fixed typo from 'set' to 'center' */
+    background-color: #15191c; /* Darker slate for sub-nav */
 }
 
 #projectMenu.show {
@@ -121,28 +121,32 @@ main {
 
 .navbar {
     padding: 0rem 3rem !important;
+    background-color: #15191c; /* Darker slate for navbar */
 }
 
 @media (max-width: 768px) {
     .navbar {
         flex-direction: row;
         padding: 0.75rem 1rem !important;
+        background-color: #15191c; /* Darker slate for navbar */
     }
 
     #mobileMenu {
         flex-direction: column;
         align-items: center;
         z-index: 50;
-        display: none;
+        display: none; /* Initial state */
+        background-color: #1b1f23; /* Main background for mobile menu */
     }
 
     #mobileMenu.show {
-        display: flex !important;
+        display: flex !important; /* Override Tailwind's hidden class */
     }
 
     #projectMenu, #headingsMenu {
         width: 80%;
         max-width: 250px;
+        background-color: #1b1f23; /* Main background for mobile menus */
     }
 
     #markdownContent {
@@ -168,6 +172,7 @@ main {
         justify-content: center;
         align-items: center;
         height: 100%;
+        background-color: #1b1f23; /* Main background for project list */
     }
 
     #projectList li {
@@ -186,7 +191,7 @@ main {
     font-weight: 700;
     margin-top: 1.5rem;
     margin-bottom: 1rem;
-    color: #1A1A1A;
+    color: #f4f4f4; /* Primary text for h1 */
 }
 
 .prose h2 {
@@ -194,7 +199,7 @@ main {
     font-weight: 600;
     margin-top: 2rem;
     margin-bottom: 0.75rem;
-    color: #1A1A1A;
+    color: #f4f4f4; /* Primary text for h2 */
 }
 
 .prose h3 {
@@ -202,35 +207,35 @@ main {
     font-weight: 600;
     margin-top: 1.5rem;
     margin-bottom: 0.5rem;
-    color: #1A1A1A;
+    color: #f4f4f4; /* Primary text for h3 */
 }
 
 .prose p {
     margin-bottom: 1rem;
-    color: #1A1A1A;
+    color: #f4f4f4; /* Primary text for paragraphs */
 }
 
 .prose a {
-    color: #A855F7;
+    color: #f4f4f4; /* Primary text for links */
     text-decoration: underline;
     transition: color 0.2s ease;
 }
 
 .prose a:hover {
-    color: #9333EA;
+    color: #d1d5db; /* Slightly lighter gray for hover */
 }
 
 .prose code {
-    font-family: 'Menlo', 'Monaco', 'Consolas', 'Courier New', monospace;
+    font-family: 'IBM Plex Sans', 'Menlo', 'Monaco', 'Consolas', 'Courier New', monospace;
     font-size: 0.875rem;
-    background-color: #F3F4F6;
+    background-color: #2c2c2c; /* Darker slate for code background */
     padding: 0.5rem 0.4rem;
     border-radius: 0.25rem;
-    color: #1A1A1A;
+    color: #f4f4f4; /* Primary text for code */
 }
 
 .prose pre {
-    background-color: #F3F4F6;
+    background-color: #2c2c2c; /* Darker slate for pre background */
     padding: 1rem;
     border-radius: 0.5rem;
     overflow-x: auto;
@@ -247,7 +252,7 @@ main {
 
 .prose hr {
     border: none;
-    border-top: 1px solid #E5E7EB;
+    border-top: 1px solid #9ca3af; /* Secondary text for hr */
     margin: 2rem 0;
 }
 
@@ -267,14 +272,14 @@ main {
 
 .prose li {
     margin-bottom: 0.5rem;
-    color: #1A1A1A;
+    color: #f4f4f4; /* Primary text for list items */
 }
 
 .prose blockquote {
-    border-left: 4px solid #E5E7EB;
+    border-left: 4px solid #9ca3af; /* Secondary text for blockquote border */
     padding-left: 1rem;
     margin-bottom: 1rem;
-    color: #4B5563;
+    color: #9ca3af; /* Secondary text for blockquote */
     font-style: italic;
 }
 
@@ -286,12 +291,13 @@ main {
 
 .prose th,
 .prose td {
-    border: 1px solid #E5E7EB;
+    border: 1px solid #9ca3af; /* Secondary text for table borders */
     padding: 0.5rem;
     text-align: left;
 }
 
 .prose th {
-    background-color: #F3F4F6;
+    background-color: #2c2c2c; /* Darker slate for table header */
     font-weight: 600;
+    color: #f4f4f4; /* Primary text for table header */
 }
